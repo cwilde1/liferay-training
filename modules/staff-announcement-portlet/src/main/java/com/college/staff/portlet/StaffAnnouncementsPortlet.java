@@ -4,8 +4,9 @@ import com.college.staff.dto.StaffMember;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.osgi.service.component.annotations.Component;
 
 import javax.portlet.*;
@@ -28,34 +29,43 @@ import java.util.concurrent.atomic.AtomicLong;
 )
 public class StaffAnnouncementsPortlet extends MVCPortlet {
 
+    private static final Log _log = LogFactoryUtil.getLog(StaffAnnouncementsPortlet.class);
+    
     private static final String STAFF_LIST_KEY = "STAFF_LIST";
     private static final String ID_COUNTER_KEY = "ID_COUNTER";
 
     @SuppressWarnings("unchecked")
     private List<StaffMember> getStaffListFromSession(PortletRequest request) {
         PortletSession session = request.getPortletSession();
-        List<StaffMember> staffList = (List<StaffMember>) session.getAttribute(STAFF_LIST_KEY, PortletSession.APPLICATION_SCOPE);
+        List<StaffMember> staffList = (List<StaffMember>) session.getAttribute(
+            STAFF_LIST_KEY, PortletSession.APPLICATION_SCOPE);
         if (staffList == null) {
             staffList = new ArrayList<>();
             session.setAttribute(STAFF_LIST_KEY, staffList, PortletSession.APPLICATION_SCOPE);
-            System.out.println("DEBUG: Created new staff list in session");
+            if (_log.isDebugEnabled()) {
+                _log.debug("Created new staff list in session");
+            }
         }
-        System.out.println("DEBUG: Retrieved staff list from session, count: " + staffList.size());
+        if (_log.isDebugEnabled()) {
+            _log.debug("Retrieved staff list from session, count: " + staffList.size());
+        }
         return staffList;
     }
 
     private AtomicLong getIdCounterFromSession(PortletRequest request) {
         PortletSession session = request.getPortletSession();
-        AtomicLong idCounter = (AtomicLong) session.getAttribute(ID_COUNTER_KEY, PortletSession.APPLICATION_SCOPE);
+        AtomicLong idCounter = (AtomicLong) session.getAttribute(
+            ID_COUNTER_KEY, PortletSession.APPLICATION_SCOPE);
         if (idCounter == null) {
             idCounter = new AtomicLong(1);
             session.setAttribute(ID_COUNTER_KEY, idCounter, PortletSession.APPLICATION_SCOPE);
-            System.out.println("DEBUG: Created new ID counter in session");
+            if (_log.isDebugEnabled()) {
+                _log.debug("Created new ID counter in session");
+            }
         }
         return idCounter;
     }
 
-    // Show add.jsp page
     @ProcessAction(name = "showAdd")
     public void showAdd(ActionRequest request, ActionResponse response) {
         response.setRenderParameter("mvcPath", "/add.jsp");
@@ -85,17 +95,14 @@ public class StaffAnnouncementsPortlet extends MVCPortlet {
             
             PortletSession session = request.getPortletSession();
             session.setAttribute(STAFF_LIST_KEY, staffList, PortletSession.APPLICATION_SCOPE);
-            
-            // DELETE THIS LINE: SessionMessages.add(request, "staff-added-successfully");
-            
         } catch (Exception e) {
+            _log.error("Error adding staff member", e);
             SessionErrors.add(request, "error-adding-staff");
         }
 
         response.setRenderParameter("mvcPath", "/view.jsp");
     }
     
-    // Show edit.jsp page
     @ProcessAction(name = "showEdit")
     public void showEdit(ActionRequest request, ActionResponse response) {
         long staffId = ParamUtil.getLong(request, "staffId");
@@ -115,7 +122,6 @@ public class StaffAnnouncementsPortlet extends MVCPortlet {
         }
     }
 
-    // Update staff
     @ProcessAction(name = "updateStaff")
     public void updateStaff(ActionRequest request, ActionResponse response) {
         long staffId = ParamUtil.getLong(request, "staffId");
@@ -123,7 +129,6 @@ public class StaffAnnouncementsPortlet extends MVCPortlet {
         String email = ParamUtil.getString(request, "email");
         String department = ParamUtil.getString(request, "department");
 
-        // Validation
         if (Validator.isNull(name) || Validator.isNull(email)) {
             SessionErrors.add(request, "required-fields");
             response.setRenderParameter("mvcPath", "/edit.jsp");
@@ -146,21 +151,19 @@ public class StaffAnnouncementsPortlet extends MVCPortlet {
             }
             
             if (updated) {
-                // Force save back to session
                 PortletSession session = request.getPortletSession();
                 session.setAttribute(STAFF_LIST_KEY, staffList, PortletSession.APPLICATION_SCOPE);
-                //SessionMessages.add(request, "staff-updated-successfully");
             } else {
                 SessionErrors.add(request, "staff-not-found");
             }
         } catch (Exception e) {
+            _log.error("Error updating staff member", e);
             SessionErrors.add(request, "error-updating-staff");
         }
 
         response.setRenderParameter("mvcPath", "/view.jsp");
     }
 
-    // Delete staff
     @ProcessAction(name = "deleteStaff")
     public void deleteStaff(ActionRequest request, ActionResponse response) {
         long staffId = ParamUtil.getLong(request, "staffId");
@@ -170,14 +173,13 @@ public class StaffAnnouncementsPortlet extends MVCPortlet {
             boolean deleted = staffList.removeIf(member -> member.getId() == staffId);
             
             if (deleted) {
-                // Force save back to session
                 PortletSession session = request.getPortletSession();
                 session.setAttribute(STAFF_LIST_KEY, staffList, PortletSession.APPLICATION_SCOPE);
-                //SessionMessages.add(request, "staff-deleted-successfully");
             } else {
                 SessionErrors.add(request, "staff-not-found");
             }
         } catch (Exception e) {
+            _log.error("Error deleting staff member", e);
             SessionErrors.add(request, "error-deleting-staff");
         }
 
@@ -190,7 +192,6 @@ public class StaffAnnouncementsPortlet extends MVCPortlet {
         
         String mvcPath = ParamUtil.getString(renderRequest, "mvcPath", "/view.jsp");
         
-        // For edit.jsp, load the staff member
         if ("/edit.jsp".equals(mvcPath)) {
             long staffId = ParamUtil.getLong(renderRequest, "staffId");
             if (staffId > 0) {
@@ -204,14 +205,12 @@ public class StaffAnnouncementsPortlet extends MVCPortlet {
                     renderRequest.setAttribute("staffMember", member);
                     renderRequest.setAttribute("staffId", staffId);
                 } else {
-                    // Staff member not found, redirect to view
                     renderRequest.setAttribute("mvcPath", "/view.jsp");
                     SessionErrors.add(renderRequest, "staff-not-found");
                 }
             }
         }
         
-        // Always load staff list for view.jsp
         if ("/view.jsp".equals(mvcPath)) {
             List<StaffMember> staffList = getStaffListFromSession(renderRequest);
             renderRequest.setAttribute("staffList", staffList);
@@ -220,19 +219,15 @@ public class StaffAnnouncementsPortlet extends MVCPortlet {
         super.doView(renderRequest, renderResponse);
     }
 
- // Update the render method:
-
     @Override
     public void render(RenderRequest renderRequest, RenderResponse renderResponse)
             throws IOException, PortletException {
         
         String mvcPath = ParamUtil.getString(renderRequest, "mvcPath", "/view.jsp");
         
-        // Always ensure staff list is available
         List<StaffMember> staffList = getStaffListFromSession(renderRequest);
         renderRequest.setAttribute("staffList", staffList);
         
-        // For edit page, ensure staff member is loaded
         if ("/edit.jsp".equals(mvcPath)) {
             long staffId = ParamUtil.getLong(renderRequest, "staffId");
             if (staffId > 0) {
