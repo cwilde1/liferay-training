@@ -1,0 +1,35 @@
+// groovy script to test servicebuilder code
+
+import com.university.course.service.CourseLocalServiceUtil
+import com.university.course.model.Course
+
+// Add a new course
+course = CourseLocalServiceUtil.createCourse(0)
+course.setCourseName("Intro to Java")
+course.setDescription("Learn Java basics")
+course.setCredits(3)
+
+course = CourseLocalServiceUtil.addCourse(course)
+
+println "Added Course: ${course.getCourseName()} (ID: ${course.getCourseId()})"
+
+// Print all courses
+println "\nAll Courses:"
+CourseLocalServiceUtil.getCourses(-1, -1).each { c ->
+    println "ID: ${c.getCourseId()} | Name: ${c.getCourseName()} | Description: ${c.getDescription()} | Credits: ${c.getCredits()}"
+}
+
+
+// end groovy script
+
+List all jsonws apis (legacy apis - avoid using these)
+http://localhost:8080/api/jsonws
+
+After creating and deploying custom rest module:
+Visit: http://localhost:8080/o/greetings/morning
+
+
+
+
+
+
