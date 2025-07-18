@@ -1,0 +1,41 @@
+# Build outputs
+**/build
+**/build_gradle
+**/dist
+**/bin
+**/tmp
+**/test-coverage
+**/.web_bundle_build
+test-results
+
+# Gradle
+.gradle
+/gradle-*.properties
+
+# Liferay
+/bundles
+
+# IDE files
+**/*.iml
+**/.classpath
+**/.project
+**/.settings
+.idea
+
+# Node.js
+**/node_modules
+**/node_modules_cache
+
+# Cache files
+**/.ivy
+**/.sass-cache
+
+# Plugins SDK (legacy)
+/plugins-sdk/**/classes
+/plugins-sdk/**/ivy.xml.MD5
+/plugins-sdk/**/liferay-hook.xml.processed
+/plugins-sdk/build.*.properties
+/plugins-sdk/dependencies/**/*.jar
+/plugins-sdk/dist
+/plugins-sdk/lib
+/.metadata/
