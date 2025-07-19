@@ -50,7 +50,7 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(9);
+		StringBundler sb = new StringBundler(11);
 
 		sb.append("{courseId=");
 		sb.append(courseId);
@@ -60,6 +60,8 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 		sb.append(description);
 		sb.append(", credits=");
 		sb.append(credits);
+		sb.append(", students=");
+		sb.append(students);
 		sb.append("}");
 
 		return sb.toString();
@@ -86,6 +88,7 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 		}
 
 		courseImpl.setCredits(credits);
+		courseImpl.setStudents(students);
 
 		courseImpl.resetOriginalValues();
 
@@ -99,6 +102,8 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 		description = objectInput.readUTF();
 
 		credits = objectInput.readInt();
+
+		students = objectInput.readInt();
 	}
 
 	@Override
@@ -120,11 +125,14 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 		}
 
 		objectOutput.writeInt(credits);
+
+		objectOutput.writeInt(students);
 	}
 
 	public long courseId;
 	public String courseName;
 	public String description;
 	public int credits;
+	public int students;
 
 }

@@ -56,6 +56,7 @@ public class DynamicRestApp extends Application {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public String heartbeat() {
+		_log.info("Heartbeat endpoint called");
 		return "{ \"message\": \"Dynamic Courses API heartbeat\", \"status\": \"success\" }";
 	}
 
@@ -63,6 +64,7 @@ public class DynamicRestApp extends Application {
 	@Path("/courses")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllCourses() {
+		_log.info("getAllCourses endpoint called");
 		try {
 			List<Course> courses = _courseLocalService.getCourses(-1, -1);
 			List<CourseResponse> courseResponses = new ArrayList<>();
@@ -72,10 +74,12 @@ public class DynamicRestApp extends Application {
 						course.getCourseId(),
 						course.getCourseName(),
 						course.getDescription(),
-						course.getCredits()
+						course.getCredits(),
+						course.getStudents()
 				));
 			}
 
+			_log.info("Returning " + courseResponses.size() + " courses");
 			return Response.ok(courseResponses).build();
 		} catch (Exception e) {
 			_log.error("Error retrieving courses", e);
@@ -94,7 +98,8 @@ public class DynamicRestApp extends Application {
 					course.getCourseId(),
 					course.getCourseName(),
 					course.getDescription(),
-					course.getCredits()
+					course.getCredits(),
+					course.getStudents()
 			);
 			return Response.ok(response).build();
 		} catch (PortalException e) {
@@ -124,14 +129,17 @@ public class DynamicRestApp extends Application {
 			course.setCourseName(courseName);
 			course.setDescription(description);
 			course.setCredits(credits);
-
+			if (jsonObject.has("students")) {
+				course.setStudents(jsonObject.getInt("students"));
+			}
 			course = _courseLocalService.addCourse(course);
 
 			CourseResponse response = new CourseResponse(
 					course.getCourseId(),
 					course.getCourseName(),
 					course.getDescription(),
-					course.getCredits()
+					course.getCredits(),
+					course.getStudents()
 			);
 
 			return Response.status(Response.Status.CREATED).entity(response).build();
@@ -160,6 +168,9 @@ public class DynamicRestApp extends Application {
 			if (jsonObject.has("credits")) {
 				course.setCredits(jsonObject.getInt("credits"));
 			}
+			if (jsonObject.has("students")) {
+				course.setStudents(jsonObject.getInt("students"));
+			}
 
 			course = _courseLocalService.updateCourse(course);
 
@@ -167,7 +178,8 @@ public class DynamicRestApp extends Application {
 					course.getCourseId(),
 					course.getCourseName(),
 					course.getDescription(),
-					course.getCredits()
+					course.getCredits(),
+					course.getStudents()
 			);
 
 			return Response.ok(response).build();

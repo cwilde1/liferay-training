@@ -60,7 +60,8 @@ public class CourseModelImpl
 
 	public static final Object[][] TABLE_COLUMNS = {
 		{"courseId", Types.BIGINT}, {"courseName", Types.VARCHAR},
-		{"description", Types.VARCHAR}, {"credits", Types.INTEGER}
+		{"description", Types.VARCHAR}, {"credits", Types.INTEGER},
+		{"students", Types.INTEGER}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -71,10 +72,11 @@ public class CourseModelImpl
 		TABLE_COLUMNS_MAP.put("courseName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("credits", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("students", Types.INTEGER);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table CollegeCourse_Course (courseId LONG not null primary key,courseName VARCHAR(75) null,description VARCHAR(75) null,credits INTEGER)";
+		"create table CollegeCourse_Course (courseId LONG not null primary key,courseName VARCHAR(75) null,description VARCHAR(75) null,credits INTEGER,students INTEGER)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table CollegeCourse_Course";
@@ -205,6 +207,7 @@ public class CourseModelImpl
 			attributeGetterFunctions.put("courseName", Course::getCourseName);
 			attributeGetterFunctions.put("description", Course::getDescription);
 			attributeGetterFunctions.put("credits", Course::getCredits);
+			attributeGetterFunctions.put("students", Course::getStudents);
 
 			_attributeGetterFunctions = Collections.unmodifiableMap(
 				attributeGetterFunctions);
@@ -231,6 +234,8 @@ public class CourseModelImpl
 				(BiConsumer<Course, String>)Course::setDescription);
 			attributeSetterBiConsumers.put(
 				"credits", (BiConsumer<Course, Integer>)Course::setCredits);
+			attributeSetterBiConsumers.put(
+				"students", (BiConsumer<Course, Integer>)Course::setStudents);
 
 			_attributeSetterBiConsumers = Collections.unmodifiableMap(
 				(Map)attributeSetterBiConsumers);
@@ -308,6 +313,21 @@ public class CourseModelImpl
 		_credits = credits;
 	}
 
+	@JSON
+	@Override
+	public int getStudents() {
+		return _students;
+	}
+
+	@Override
+	public void setStudents(int students) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_students = students;
+	}
+
 	public long getColumnBitmask() {
 		if (_columnBitmask > 0) {
 			return _columnBitmask;
@@ -368,6 +388,7 @@ public class CourseModelImpl
 		courseImpl.setCourseName(getCourseName());
 		courseImpl.setDescription(getDescription());
 		courseImpl.setCredits(getCredits());
+		courseImpl.setStudents(getStudents());
 
 		courseImpl.resetOriginalValues();
 
@@ -384,6 +405,8 @@ public class CourseModelImpl
 		courseImpl.setDescription(
 			this.<String>getColumnOriginalValue("description"));
 		courseImpl.setCredits(this.<Integer>getColumnOriginalValue("credits"));
+		courseImpl.setStudents(
+			this.<Integer>getColumnOriginalValue("students"));
 
 		return courseImpl;
 	}
@@ -479,6 +502,8 @@ public class CourseModelImpl
 
 		courseCacheModel.credits = getCredits();
 
+		courseCacheModel.students = getStudents();
+
 		return courseCacheModel;
 	}
 
@@ -543,6 +568,7 @@ public class CourseModelImpl
 	private String _courseName;
 	private String _description;
 	private int _credits;
+	private int _students;
 
 	public <T> T getColumnValue(String columnName) {
 		Function<Course, Object> function =
@@ -576,6 +602,7 @@ public class CourseModelImpl
 		_columnOriginalValues.put("courseName", _courseName);
 		_columnOriginalValues.put("description", _description);
 		_columnOriginalValues.put("credits", _credits);
+		_columnOriginalValues.put("students", _students);
 	}
 
 	private transient Map<String, Object> _columnOriginalValues;
@@ -596,6 +623,8 @@ public class CourseModelImpl
 		columnBitmasks.put("description", 4L);
 
 		columnBitmasks.put("credits", 8L);
+
+		columnBitmasks.put("students", 16L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}

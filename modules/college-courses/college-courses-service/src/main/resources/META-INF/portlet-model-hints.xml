@@ -6,5 +6,6 @@
 		<field name="courseName" type="String" />
 		<field name="description" type="String" />
 		<field name="credits" type="int" />
+		<field name="students" type="int" />
 	</model>
 </model-hints>

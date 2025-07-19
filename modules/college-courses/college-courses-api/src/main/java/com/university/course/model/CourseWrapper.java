@@ -35,6 +35,7 @@ public class CourseWrapper
 		attributes.put("courseName", getCourseName());
 		attributes.put("description", getDescription());
 		attributes.put("credits", getCredits());
+		attributes.put("students", getStudents());
 
 		return attributes;
 	}
@@ -63,6 +64,12 @@ public class CourseWrapper
 
 		if (credits != null) {
 			setCredits(credits);
+		}
+
+		Integer students = (Integer)attributes.get("students");
+
+		if (students != null) {
+			setStudents(students);
 		}
 	}
 
@@ -121,6 +128,16 @@ public class CourseWrapper
 		return model.getPrimaryKey();
 	}
 
+	/**
+	 * Returns the students of this course.
+	 *
+	 * @return the students of this course
+	 */
+	@Override
+	public int getStudents() {
+		return model.getStudents();
+	}
+
 	@Override
 	public void persist() {
 		model.persist();
@@ -174,6 +191,16 @@ public class CourseWrapper
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		model.setPrimaryKey(primaryKey);
+	}
+
+	/**
+	 * Sets the students of this course.
+	 *
+	 * @param students the students of this course
+	 */
+	@Override
+	public void setStudents(int students) {
+		model.setStudents(students);
 	}
 
 	@Override

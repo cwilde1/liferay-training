@@ -5,12 +5,14 @@ public class CourseResponse {
     private String courseName;
     private String description;
     private int credits;
+    private int students;
 
-    public CourseResponse(long courseId, String courseName, String description, int credits) {
+    public CourseResponse(long courseId, String courseName, String description, int credits, int students) {
         this.courseId = courseId;
         this.courseName = courseName;
         this.description = description;
         this.credits = credits;
+        this.students = students;
     }
 
     // Getters and setters
@@ -25,4 +27,7 @@ public class CourseResponse {
 
     public int getCredits() { return credits; }
     public void setCredits(int credits) { this.credits = credits; }
+
+    public int getStudents() { return students; }
+    public void setStudents(int students) { this.students = students; }
 }

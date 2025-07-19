@@ -3,11 +3,11 @@
 
 <service-builder package-path="com.university.course">
     <namespace>CollegeCourse</namespace>
-
     <entity name="Course" local-service="true" remote-service="true">
         <column name="courseId" type="long" primary="true" id-type="increment" />
         <column name="courseName" type="String" />
         <column name="description" type="String" />
         <column name="credits" type="int" />
+        <column name="students" type="int" />
     </entity>
 </service-builder>

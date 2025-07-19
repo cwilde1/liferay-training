@@ -102,6 +102,20 @@ public interface CourseModel extends BaseModel<Course> {
 	 */
 	public void setCredits(int credits);
 
+	/**
+	 * Returns the students of this course.
+	 *
+	 * @return the students of this course
+	 */
+	public int getStudents();
+
+	/**
+	 * Sets the students of this course.
+	 *
+	 * @param students the students of this course
+	 */
+	public void setStudents(int students);
+
 	@Override
 	public Course cloneWithOriginalValues();
 

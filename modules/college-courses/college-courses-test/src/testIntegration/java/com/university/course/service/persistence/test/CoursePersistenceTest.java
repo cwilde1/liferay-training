@@ -119,6 +119,8 @@ public class CoursePersistenceTest {
 
 		newCourse.setCredits(RandomTestUtil.nextInt());
 
+		newCourse.setStudents(RandomTestUtil.nextInt());
+
 		_courses.add(_persistence.update(newCourse));
 
 		Course existingCourse = _persistence.findByPrimaryKey(
@@ -132,6 +134,8 @@ public class CoursePersistenceTest {
 			existingCourse.getDescription(), newCourse.getDescription());
 		Assert.assertEquals(
 			existingCourse.getCredits(), newCourse.getCredits());
+		Assert.assertEquals(
+			existingCourse.getStudents(), newCourse.getStudents());
 	}
 
 	@Test
@@ -160,7 +164,7 @@ public class CoursePersistenceTest {
 	protected OrderByComparator<Course> getOrderByComparator() {
 		return OrderByComparatorFactoryUtil.create(
 			"CollegeCourse_Course", "courseId", true, "courseName", true,
-			"description", true, "credits", true);
+			"description", true, "credits", true, "students", true);
 	}
 
 	@Test
@@ -373,6 +377,8 @@ public class CoursePersistenceTest {
 		course.setDescription(RandomTestUtil.randomString());
 
 		course.setCredits(RandomTestUtil.nextInt());
+
+		course.setStudents(RandomTestUtil.nextInt());
 
 		_courses.add(_persistence.update(course));
 

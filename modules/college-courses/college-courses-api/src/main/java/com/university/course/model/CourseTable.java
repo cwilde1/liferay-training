@@ -29,6 +29,8 @@ public class CourseTable extends BaseTable<CourseTable> {
 		"description", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<CourseTable, Integer> credits = createColumn(
 		"credits", Integer.class, Types.INTEGER, Column.FLAG_DEFAULT);
+	public final Column<CourseTable, Integer> students = createColumn(
+		"students", Integer.class, Types.INTEGER, Column.FLAG_DEFAULT);
 
 	private CourseTable() {
 		super("CollegeCourse_Course", CourseTable::new);
