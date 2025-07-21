@@ -1,12 +1,12 @@
 # liferay-training
 
-#### Verify jdk installation (Should be on JDK 17)
+#### Verify jdk installation (should be on JDK 17 at least)
 ```
     java -version
 ```
 #### Download node:
-Download and install LTS version - https://nodejs.org
-Run installer with default settings. Verify:
+https://nodejs.org
+Download and install LTS version with default settings, then verify:
 ```
     node --version
     npm --version
@@ -17,6 +17,7 @@ Run installer with default settings. Verify:
 ```
 #### navigate to your dev directory
 ```
+    mkdir C:\devOpen command prompt and run:
     cd C:\dev
 ```
 #### init workspace
