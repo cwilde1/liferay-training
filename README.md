@@ -2,6 +2,7 @@
 
 ## Installation Instructions
 #### Verify jdk installation (should be on JDK 17 at least)
+https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/downloads-list.html
 ```
     java -version
 ```
