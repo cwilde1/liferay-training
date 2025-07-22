@@ -38,7 +38,7 @@ Download and install LTS version with default settings, then verify:
 ````
 #### login with default admin user
 ```
-    user: test
+    user: test@liferay.com
     password: test
 `````
 
