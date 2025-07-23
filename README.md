@@ -65,6 +65,57 @@ Liferay includes the Gogo shell, a command-line tool for interacting with the OS
 - `log:get`  
   Displays recent log entries from the OSGi log service.
 
+- `log:tail`  
+  Continuously displays new log entries as they occur.
+
+- `dm wtf`  
+  Shows diagnostic information about dependency management issues.
+
+- `dm na`  
+  Lists bundles that are not active and their dependency issues.
+
+- `bundle:start <bundle-id>`  
+  Starts a specific OSGi bundle by ID.
+
+- `bundle:stop <bundle-id>`  
+  Stops a specific OSGi bundle by ID.
+
+- `bundle:refresh <bundle-id>`  
+  Refreshes a specific OSGi bundle (useful after code changes).
+
+- `bundle:update <bundle-id>`  
+  Updates a specific OSGi bundle.
+
+- `headers <bundle-id>`  
+  Shows the manifest headers of a specific bundle.
+
+- `packages <bundle-name>`  
+  Lists packages exported/imported by a bundle.
+
+- `inspect capability service <bundle-id>`  
+  Shows services provided by a specific bundle.
+
+- `inspect requirement service <bundle-id>`  
+  Shows service dependencies of a specific bundle.
+
+- `felix:bundlelevel <bundle-id>`  
+  Shows the start level of a specific bundle.
+
+- `system:property`  
+  Lists all system properties.
+
+- `system:property <property-name>`  
+  Shows the value of a specific system property.
+
+- `threads`  
+  Displays information about running threads.
+
+- `gc`  
+  Forces garbage collection.
+
+- `meminfo`  
+  Shows memory usage information.
+
 - `shutdown`  
   Shuts down the Liferay server.
 
@@ -76,4 +127,5 @@ Liferay includes the Gogo shell, a command-line tool for interacting with the OS
   Connect using `telnet localhost 11311` and then enter commands at the `g!` prompt.
 
 For more information, see the [Liferay Gogo Shell documentation](https://learn.liferay.com/dxp/latest/en/developing-applications/core-frameworks/gogo-shell.html).
+
 
