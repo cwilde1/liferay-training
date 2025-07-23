@@ -2,6 +2,7 @@
 
 ## Installation Instructions
 #### Verify jdk installation (should be on JDK 17 at least)
+https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/downloads-list.html
 ```
     java -version
 ```
@@ -37,7 +38,7 @@ Download and install LTS version with default settings, then verify:
 ````
 #### login with default admin user
 ```
-    user: test
+    user: test@liferay.com
     password: test
 `````
 
